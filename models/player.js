@@ -1,29 +1,30 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const PlayerSchema = new Schema({
-  Player: {
+  firstName: {
     type: String,
-    required: [true, 'Player is required!']
+    require: [true, 'First name required!']
   },
-  answers: {
-    type: Array,
-    require: [true, 'Answers is required!'],
-  },
-  correct_answer: {
+  lastName: {
     type: String,
-    require: [true, 'correct answer is required!'],
+    require: [true, 'Last name required!']
   },
-  category: {
+  age: {
+    type: Number,
+    require: [true, 'Age required!']
+  },
+  church: {
     type: String,
-    require: [true, 'Category of Player is required!'],
+    require: [true, 'Church name required!']
   },
-  level: {
+  email: {
     type: String,
-    require: [true, 'Level of Player is required!'],
+    require: [true, 'Email is required!']
   },
-  image: {
+  why: {
     type: String,
-  },
+    require: [true, 'The reason for participating is required!']
+  }
 }, {
   timestamps: true
 })
