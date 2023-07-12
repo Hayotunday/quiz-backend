@@ -19,6 +19,7 @@ const PlayerSchema = new Schema({
   },
   email: {
     type: String,
+    unique: [true, "Email must be unique"],
     require: [true, 'Email is required!']
   },
   why: {

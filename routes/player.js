@@ -1,0 +1,77 @@
+import express from "express";
+import Player from '../models/player.js'
+
+const router = express.Router();
+
+
+router.get('/', async (req, res) => {
+  try {
+    await Player.find()
+      .then((resp) => { return res.status(200).json(resp) })
+      .catch((err) => { return res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    await Player.findById(req.params.id)
+      .then((resp) => { return res.status(200).json(resp) })
+      .catch((err) => { return res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+});
+
+router.post('/', async (req, res) => {
+  try {
+    const isExist = await Player.findOne({ email: req.body.email })
+
+    if (isExist) return res.status(401).json({ message: "Email already used. Please use a different email to register." })
+
+    const newPlayer = new Player({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      age: req.body.age,
+      church: req.body.church,
+      email: req.body.email,
+      why: req.body.why
+    })
+
+    await newPlayer.save()
+      .then((resp) => { return res.status(201).json(resp) })
+      .catch((err) => { return res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+});
+
+router.patch('/:id', async (req, res) => {
+  try {
+    await Player.findByIdAndUpdate(req.params.id, {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      age: req.body.age,
+      church: req.body.church,
+      email: req.body.email,
+      why: req.body.why
+    })
+      .then((resp) => { res.status(200).json(resp) })
+      .catch((err) => { res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    await Player.findByIdAndDelete(req.params.id)
+      .then((resp) => { return res.sendStatus(200) })
+      .catch((err) => { return res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+});
+
+export default router

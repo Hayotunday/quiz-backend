@@ -5,6 +5,7 @@ import cors from 'cors'
 
 import { connectToDB } from './connection.js'
 
+import playerRoutes from './routes/player.js'
 import questionRoutes from './routes/question.js'
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 connectToDB();
 
+app.use("/player", playerRoutes)
 app.use("/question", questionRoutes)
 // app.use("/auth", authRoutes)
 
