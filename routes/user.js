@@ -25,6 +25,9 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
+
+  const pass = await bcrypt.hash(req.body.password, 10)
+
   try {
     const isExist = await User.findOne({ email: req.body.email })
 
@@ -36,6 +39,7 @@ router.post('/register', async (req, res) => {
       age: req.body.age,
       church: req.body.church,
       email: req.body.email,
+      pasword: pass,
       why: req.body.why
     })
 
@@ -49,9 +53,20 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    await User.findOne({ email: req.body.email })
-      .then((resp) => { return res.status(201).json(resp) })
-      .catch((err) => { return res.status(500).json(err) })
+    const result = await User.findOne({ email: req.body.email })
+    if (result === null) {
+      return res.status(401).json({ message: "User not found!" })
+    }
+
+    // compare password
+    const checkPassword = await bcrypt.compare(req.body.password, result.password)
+
+    // incorrect password
+    if (!checkPassword || result.email !== req.body.email) {
+      // "User Email or Password doesn't match" 401
+      return res.status(401).json({ message: "User Email or Password doesn't match" })
+    }
+    return res.status(200).json(result)
   } catch (error) {
     return res.sendStatus(500)
   }

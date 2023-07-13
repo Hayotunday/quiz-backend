@@ -22,6 +22,10 @@ const UserSchema = new Schema({
     unique: [true, "Email must be unique"],
     require: [true, 'Email is required!']
   },
+  pasword: {
+    type: String,
+    require: [true, 'Password is required!']
+  },
   why: {
     type: String,
     require: [true, 'The reason for participating is required!']
