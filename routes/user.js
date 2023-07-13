@@ -1,12 +1,12 @@
 import express from "express";
-import Player from '../models/player.js'
+import User from '../models/user.js'
 
 const router = express.Router();
 
 
 router.get('/', async (req, res) => {
   try {
-    await Player.find()
+    await User.find()
       .then((resp) => { return res.status(200).json(resp) })
       .catch((err) => { return res.status(500).json(err) })
   } catch (error) {
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    await Player.findById(req.params.id)
+    await User.findById(req.params.id)
       .then((resp) => { return res.status(200).json(resp) })
       .catch((err) => { return res.status(500).json(err) })
   } catch (error) {
@@ -24,17 +24,32 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
-    const isExist = await Player.findOne({ email: req.body.id })
+    const isExist = await User.findOne({ email: req.body.email })
 
-    if (isExist) return res.status(401).json({ message: "Player already registered!." })
+    if (isExist) return res.status(401).json({ message: "Email already used. Please use a different email to register." })
 
-    const newPlayer = new Player({
-      user: req.body.id
+    const newUser = new User({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      age: req.body.age,
+      church: req.body.church,
+      email: req.body.email,
+      why: req.body.why
     })
 
-    await newPlayer.save()
+    await newUser.save()
+      .then((resp) => { return res.status(201).json(resp) })
+      .catch((err) => { return res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+});
+
+router.post('/login', async (req, res) => {
+  try {
+    await User.findOne({ email: req.body.email })
       .then((resp) => { return res.status(201).json(resp) })
       .catch((err) => { return res.status(500).json(err) })
   } catch (error) {
@@ -44,9 +59,12 @@ router.post('/', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   try {
-    await Player.findByIdAndUpdate(req.params.id, {
-      score: req.body.score,
-      question: req.body.question
+    await User.findByIdAndUpdate(req.params.id, {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      age: req.body.age,
+      church: req.body.church,
+      why: req.body.why
     })
       .then((resp) => { res.status(200).json(resp) })
       .catch((err) => { res.status(500).json(err) })
@@ -57,7 +75,7 @@ router.patch('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    await Player.findByIdAndDelete(req.params.id)
+    await User.findByIdAndDelete(req.params.id)
       .then((resp) => { return res.sendStatus(200) })
       .catch((err) => { return res.status(500).json(err) })
   } catch (error) {
