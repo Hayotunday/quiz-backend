@@ -22,7 +22,7 @@ const UserSchema = new Schema({
     unique: [true, "Email must be unique"],
     require: [true, 'Email is required!']
   },
-  pasword: {
+  password: {
     type: String,
     require: [true, 'Password is required!']
   },

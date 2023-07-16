@@ -27,12 +27,13 @@ router.get('/:id', async (req, res) => {
 
 router.post('/register', async (req, res) => {
 
-  const pass = await bcrypt.hash(req.body.password, 10)
-
   try {
+    const salt = 12
+    const pass = await bcrypt.hash(req.body.password, salt)
+
     const isExist = await User.findOne({ email: req.body.email })
 
-    if (!isExist) return res.status(401).json({ message: "Email already used. Please use a different email to register." })
+    if (isExist) return res.status(401).json({ message: "Email already used. Please use a different email to register." })
 
     const newUser = new User({
       firstName: req.body.firstName,
@@ -40,15 +41,16 @@ router.post('/register', async (req, res) => {
       age: req.body.age,
       church: req.body.church,
       email: req.body.email,
-      pasword: pass,
+      password: pass,
       why: req.body.why
     })
 
     await newUser.save()
-      .then((resp) => { return res.status(201).json(resp) })
-      .catch((err) => { return res.status(500).json(err) })
+      .then((user) => { return res.status(201).json({ user, message: "Successfully saved" }) })
+      .catch((err) => { console.log(err); return res.status(500).json(err) })
   } catch (error) {
-    return res.sendStatus(500)
+    console.log(error);
+    return res.status(500).json(error)
   }
 });
 
