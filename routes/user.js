@@ -28,8 +28,8 @@ router.get('/:id', async (req, res) => {
 router.post('/register', async (req, res) => {
 
   try {
-    const salt = 12
-    const pass = await bcrypt.hash(req.body.password, salt)
+    // const salt = 12
+    // const pass = await bcrypt.hash(req.body.password, salt)
 
     const isExist = await User.findOne({ email: req.body.email })
 
@@ -41,7 +41,8 @@ router.post('/register', async (req, res) => {
       age: req.body.age,
       church: req.body.church,
       email: req.body.email,
-      password: pass,
+      password: req.body.password,
+      // password: pass,
       // why: value
     })
 
