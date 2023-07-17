@@ -7,7 +7,6 @@ const FingersSchema = new Schema({
   },
   time: {
     type: Date,
-    default: Date.now()
   }
 }, {
   timestamps: true
