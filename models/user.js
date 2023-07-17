@@ -28,7 +28,7 @@ const UserSchema = new Schema({
   },
   why: {
     type: String,
-    require: [true, 'The reason for participating is required!']
+    // require: [true, 'The reason for participating is required!']
   }
 }, {
   timestamps: true
