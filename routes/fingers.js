@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    await Fingers.find()
+    await Fingers.find().populate('user')
       .then((resp) => { return res.status(200).json(resp) })
       .catch((err) => { return res.status(500).json(err) })
   } catch (error) {
