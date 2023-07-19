@@ -6,7 +6,8 @@ const FingersSchema = new Schema({
     ref: 'User'
   },
   time: {
-    type: Date,
+    type: String,
+    required: [true, "Time is required"]
   }
 }, {
   timestamps: true
