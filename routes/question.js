@@ -70,7 +70,14 @@ router.delete('/:id', async (req, res) => {
 
 
 // PROFILE TYPE ROUTES
-router.get('/profile-type', async (req, res) => {
+router.get('/generate', async (req, res) => {
+  try {
+    await Question.findOne({ category: req.body.category, level: req.body.level })
+      .then((resp) => { return res.status(200).json(resp) })
+      .catch((err) => { return res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
 });
 
 router.get('/profile-type/my-profile', async (req, res) => {
