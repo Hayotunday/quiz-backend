@@ -48,7 +48,6 @@ router.post('/generate', async (req, res) => {
     if (!questions) return res.status(200).json("No Question found!")
 
     const question = questions[(Math.floor(Math.random() * questions.length))]
-    console.log(question)
     return res.status(200).json(question)
   } catch (error) {
     return res.sendStatus(500)
