@@ -22,6 +22,5 @@ app.use("/user", userRoutes)
 app.use("/fingers", fingersRoutes)
 app.use("/player", playerRoutes)
 app.use("/question", questionRoutes)
-// app.use("/auth", authRoutes)
 
 app.listen(port, () => console.log(`SERVER RUNNING`))

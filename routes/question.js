@@ -14,6 +14,17 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/generate', async (req, res) => {
+  try {
+    const questions = await Question.find({ category: req.body.category, level: req.body.level })
+    if (!questions) return res.status(200).json("No Question found!")
+
+    return res.status(200).json(questions[(Math.floor(Math.random() * questions.length))])
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     await Question.findById(req.params.id)
@@ -66,35 +77,6 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     return res.sendStatus(500)
   }
-});
-
-
-// PROFILE TYPE ROUTES
-router.get('/generate', async (req, res) => {
-  try {
-    await Question.findOne({ category: req.body.category, level: req.body.level })
-      .then((resp) => { return res.status(200).json(resp) })
-      .catch((err) => { return res.status(500).json(err) })
-  } catch (error) {
-    return res.sendStatus(500)
-  }
-});
-
-router.get('/profile-type/my-profile', async (req, res) => {
-});
-
-router.get('/profile-type/:id', async (req, res) => {
-});
-
-router.patch('/profile-type', async (req, res) => {
-});
-
-router.post('/profile-type/add', async (req, res) => {
-});
-
-
-// PASSWORD
-router.patch('/password', async (req, res) => {
 });
 
 export default router
