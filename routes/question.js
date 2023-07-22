@@ -14,19 +14,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/generate', async (req, res) => {
-  try {
-    const questions = await Question.find({ level: req.body.level })
-    if (!questions) return res.status(200).json("No Question found!")
-
-    const question = questions[(Math.floor(Math.random() * questions.length))]
-    console.log(question)
-    return res.status(200).json(question)
-  } catch (error) {
-    return res.sendStatus(500)
-  }
-});
-
 router.get('/:id', async (req, res) => {
   try {
     await Question.findById(req.params.id)
@@ -50,6 +37,18 @@ router.post('/', async (req, res) => {
     await newQuestion.save()
       .then((resp) => { return res.status(201).json(resp) })
       .catch((err) => { return res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+});
+
+router.post('/generate', async (req, res) => {
+  try {
+    const questions = await Question.find({ level: req.body.level })
+    if (!questions) return res.status(200).json("No Question found!")
+
+    const question = questions[(Math.floor(Math.random() * questions.length))]
+    return res.status(200).json(question)
   } catch (error) {
     return res.sendStatus(500)
   }
