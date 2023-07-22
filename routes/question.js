@@ -19,7 +19,9 @@ router.get('/generate', async (req, res) => {
     const questions = await Question.find({ level: req.body.level })
     if (!questions) return res.status(200).json("No Question found!")
 
-    return res.status(200).json(questions[(Math.floor(Math.random() * questions.length))])
+    const question = questions[(Math.floor(Math.random() * questions.length))]
+    console.log(question)
+    return res.status(200).json(question)
   } catch (error) {
     return res.sendStatus(500)
   }
