@@ -9,6 +9,10 @@ const PlayerSchema = new Schema({
     type: Number,
     default: 0
   },
+  enabled: {
+    type: Boolean,
+    default: false
+  },
   question: {
     type: Number,
     default: 1

@@ -55,6 +55,21 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
+router.patch('/disable/:id', async (req, res) => {
+  try {
+    await Player.updateMany({}, {
+      enabled: false
+    })
+    await Player.findByIdAndUpdate(req.params.id, {
+      enabled: true
+    })
+      .then((resp) => { res.status(200).json("Successful") })
+      .catch((err) => { res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+});
+
 router.delete('/:id', async (req, res) => {
   try {
     await Player.findByIdAndDelete(req.params.id)
