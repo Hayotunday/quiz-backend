@@ -53,6 +53,18 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.post('/game', async (req, res) => {
+  try {
+    const game = await Game.find()
+    if (!game) return res.status(200).json("No Game found!")
+
+    return res.status(200).json(game)
+
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+});
+
 router.post('/generate', async (req, res) => {
   try {
     const questions = await Question.find({ level: req.body.level })
