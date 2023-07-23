@@ -15,6 +15,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/game', async (req, res) => {
+  try {
+    const game = await Game.find()
+    if (!game) return res.status(200).json("No Game found!")
+
+    return res.status(200).json(game)
+
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+});
+
 router.get('/answer/:id', async (req, res) => {
   try {
     await Question.findById(req.params.id)
@@ -50,18 +62,6 @@ router.post('/', async (req, res) => {
       .catch((err) => { return res.status(500).json(err) })
   } catch (error) {
     return res.sendStatus(500)
-  }
-});
-
-router.post('/game', async (req, res) => {
-  try {
-    const game = await Game.find()
-    if (!game) return res.status(200).json("No Game found!")
-
-    return res.status(200).json(game)
-
-  } catch (error) {
-    return res.status(500).json(error)
   }
 });
 
