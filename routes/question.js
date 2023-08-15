@@ -76,7 +76,8 @@ router.post('/generate', async (req, res) => {
         await new Game({
           question: question
         }).save()
-        return res.status(200).json(question)
+        // res;
+        return res.status(200).json(question).redirect('back')
       })
       .catch((error) => { res.status(400).json(error) })
 
