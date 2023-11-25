@@ -16,12 +16,19 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const newFingers = new Fingers({
-      user: req.body.id,
-      time: req.body.time
-    })
+    // const newFingers = new Fingers({
+    //   user: req.body.id,
+    //   time: req.body.time
+    // })
 
-    await newFingers.save()
+    // await newFingers.save()
+    await Fingers.findOneAndUpdate(
+      { user: req.body.id, },
+      {
+        time: req.body.time
+      },
+      { upsert: true }
+    )
       .then((resp) => { return res.status(201).json(resp) })
       .catch((err) => { return res.status(500).json(err) })
   } catch (error) {
