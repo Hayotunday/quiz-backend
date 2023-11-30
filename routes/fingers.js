@@ -36,4 +36,14 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.delete('/', async (req, res) => {
+  try {
+    await Fingers.deleteMany({})
+      .then((resp) => { return res.sendStatus(200) })
+      .catch((err) => { return res.status(500).json(err) })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+})
+
 export default router
